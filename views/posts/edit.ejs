@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Edit a post</h1>
+    <form action="/posts/<%=post._id%>?_method=PUT" method='post'>
+        <label for="userId">userId</label>
+        <input type="text" name='userId' id='userId' placeholder='userId' value="<%=post.userId%>">
+        <label for="title">Title</label>
+        <input type="text" name='title' id='title' placeholder='title' value="<%=post.title%>">
+        <label for="city">City</label>
+        <input type="text" name='city' id='city' placeholder='city' value="<%=post.city%>">
+        <label for="section">Select Category</label>
+        <select name="section" id="section">
+            <option value="food">food</option>
+            <option value="experiences">experiences</option>
+            <option value="stores">stores</option>
+            <option value="services">services</option>
+        </select>
+        <div>
+            <div>
+                <label for=" body"></label>
+            </div>
+
+            <textarea name="body" id="body" cols="10" rows="5" value="<%=post.body%>"></textarea>
+        </div>
+
+
+        <button>submit</button>
+    </form>
+
+    <a href="/posts/">go back to all posts</a>
+    <a href="/posts/<%= post._id%>">Go back to this post detail</a>
+</body>
+
+</html>
