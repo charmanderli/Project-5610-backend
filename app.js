@@ -5,11 +5,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const path = require("path");
-const postRoutes = require("./routes/postPage");
+const postRoutes = require("./routes/postsRoutes");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 
 const cors = require("cors");
+const { NOTFOUND } = require("dns");
 require("dotenv").config();
 app.use(cors());
 
@@ -35,15 +36,16 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+// middleware
+
+const notFoundMiddleware = require("./middleware/not-found.js");
+const errorHandlerMiddleware = require("./middleware/error-handler.js");
+
+app.use(express.json());
 app.use("/posts", postRoutes);
 
-app.use((err, req, res, next) => {
-  res.status(404).render("unfound");
-});
-
-app.use((req, res) => {
-  res.status(404).render("unfound");
-});
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 app.listen((port = process.env.PORT || 5000), () => {
   console.log("app is listening on port 5000");
