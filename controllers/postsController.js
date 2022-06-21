@@ -1,8 +1,20 @@
 const path = require("path");
 const Post = require(path.join(__dirname, "../models/posts.js"));
 
+const { body, validationResult } = require("express-validator");
 const createPost = async (req, res) => {
-  res.send("create post");
+  body("title").isLength({ min: 2 });
+  body("body").isLength({ min: 5 });
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const newPost = new Post(req.body);
+  const data = await newPost.save();
+
+  res.json(data);
 };
 
 const getAllPosts = async (req, res) => {
@@ -15,7 +27,7 @@ const getAllPosts = async (req, res) => {
 };
 
 const getOnePost = async (req, res) => {
-  const id = req.params["id"];
+  const { id } = req.params;
 
   try {
     const post = await Post.findById(id);
@@ -26,27 +38,42 @@ const getOnePost = async (req, res) => {
 };
 
 const updatePost = async (req, res) => {
-  res.send("update post");
+  body("title").isLength({ min: 2 });
+  body("body").isLength({ min: 5 });
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  // res.status(200).json({ msg: "Called update!" });
+  try {
+    const { id } = req.params;
+
+    console.log(req.body);
+    const post = await Post.findByIdAndUpdate(id, req.body, {
+      runValidators: true,
+      new: true,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  // res.send(req.body);
 };
 
-// const deletePost = async (req, res) => {
-//   //res.send(req.params["id"]);
-//   res.json(400, {
-//     error: 1,
-//     msg: "some error",
-//   });
-//   console.log(req.params["id"]);
-//   const id = req.params["id"];
-//   const deleted = await Post.findByIdAndDelete(id);
-//   res.redirect("/posts");
-// };
+const deletePost = async (req, res) => {
+  const { id } = req.params;
 
-// // D-Delete the Post and its data
-// router.delete("/:id", async (req, res) => {
-// const { id } = req.params;
-// const deleted = await Post.findByIdAndDelete(id);
-// res.redirect("/posts");
-// });
+  // res.status(200).json({ msg: "USER DID IT" });
+
+  try {
+    console.log(req.params);
+    const data = await Post.findByIdAndDelete(id);
+    res.json(data);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const showStats = async (req, res) => {
   res.send("show stats");
@@ -58,4 +85,5 @@ module.exports = {
   updatePost,
   showStats,
   getOnePost,
+  deletePost,
 };

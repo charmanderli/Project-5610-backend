@@ -32,6 +32,10 @@ const postSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+
+  likes: {
+    type: Number,
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
