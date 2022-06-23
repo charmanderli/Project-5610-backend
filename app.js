@@ -14,7 +14,7 @@ const { NOTFOUND } = require("dns");
 require("dotenv").config();
 app.use(cors());
 
-//const uri = "mongodb://127.0.0.1/my_database";
+// const uri = "mongodb://127.0.0.1/post_database";
 // Connecting to Mongoose
 const uri = process.env.DB_URL;
 
@@ -30,8 +30,8 @@ try {
   console.log("could not connect");
 }
 
-// app.set("views", path.join(__dirname, "views"));
-// app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -42,14 +42,14 @@ const notFoundMiddleware = require("./middleware/not-found.js");
 const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
 app.use(express.json());
-app.use("/api/v1/posts", postRoutes);
+app.use("/api/posts", postRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 80;
 app.listen(port, () => {
-  console.log(`app is listening on port {port}`);
+  console.log(`app is listening on port ${port}`);
 });
 
 // var createError = require('http-errors');

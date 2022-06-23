@@ -20,7 +20,7 @@ const postSchema = new mongoose.Schema({
 
   section: {
     type: String,
-    enum: ["food", "experiences", "stores", "services"],
+    // enum: ["food", "experiences", "stores", "services"],
   },
 
   body: {
