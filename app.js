@@ -47,8 +47,9 @@ app.use("/api/v1/posts", postRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-app.listen((port = process.env.PORT || 5000), () => {
-  console.log("app is listening on port 5000");
+const port = process.env.PORT || 80;
+app.listen(port, () => {
+  console.log(`app is listening on port {port}`);
 });
 
 // var createError = require('http-errors');
