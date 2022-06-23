@@ -30,8 +30,8 @@ try {
   console.log("could not connect");
 }
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -42,7 +42,7 @@ const notFoundMiddleware = require("./middleware/not-found.js");
 const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
 app.use(express.json());
-app.use("/posts", postRoutes);
+app.use("/api/v1/posts", postRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
