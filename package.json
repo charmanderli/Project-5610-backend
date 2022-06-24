@@ -6,10 +6,8 @@
     "node": "16.13.2"
   },
   "scripts": {
-    "start": "node app.js",
-    "build": "cd Project-5610-client && npm run build",
-    "install-client": "cd Project-5610-client && npm install",
-    "heroku-postbuild":"npm run install-client && npm run build"
+    "start": "node app.js"
+ 
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
