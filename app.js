@@ -41,18 +41,26 @@ app.use(methodOverride("_method"));
 const notFoundMiddleware = require("./middleware/not-found.js");
 const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
+
 app.use(express.json());
 app.use("/api/posts", postRoutes);
-app.get("*", (req, res) =>
-  res.sendFile(path.resolve(__dirname + "/public", "index.html"))
-);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 80;
-app.listen(port, () => {
-  console.log(`app is listening on port ${port}`);
+app.get("*", (req, res) =>
+  res.sendFile(path.resolve(__dirname + "/public", "index.html"))
+);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
+app.listen(process.env.PORT || 80, () => {
+  console.log("app is listening on port ");
 });
 
 // var createError = require('http-errors');

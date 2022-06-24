@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "cd Project-5610-client && npm run build",
+    "install-client": "cd Project-5610-client && npm install",
+    "heroku-postbuild":"npm run install-client && npm run build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
