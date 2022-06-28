@@ -2,6 +2,7 @@ const path = require("path");
 const Post = require(path.join(__dirname, "../models/posts.js"));
 
 const { body, validationResult } = require("express-validator");
+const { search } = require("../routes/postsRoutes");
 const createPost = async (req, res) => {
   body("title").isLength({ min: 2 });
   body("body").isLength({ min: 5 });
@@ -46,6 +47,20 @@ const getOnePost = async (req, res) => {
   }
 };
 
+const getPostsByLocation = async (req, res) => {
+  // res.send('search');
+  try {
+    const params = req.query;
+    let data = await Post.find({});
+    data = data.filter((d) =>
+      d.city.trim().toLowerCase().includes(params.location.trim().toLowerCase())
+    );
+    res.json(data);
+  } catch (err) {
+    console.log("err ", err);
+  }
+};
+
 const showMyPosts = async (req, res) => {
   const { userid } = req.params;
 
@@ -72,11 +87,12 @@ const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log(req.body);
+    // console.log(req.body);
     const post = await Post.findByIdAndUpdate(id, req.body, {
       runValidators: true,
       new: true,
     });
+    res.json(post)
   } catch (err) {
     console.log(err);
   }
@@ -109,5 +125,6 @@ module.exports = {
   showMyPosts,
   getOnePost,
   deletePost,
+  getPostsByLocation,
   // getForm,
 };

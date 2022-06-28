@@ -6,6 +6,7 @@ dotenv.config();
 
 const path = require("path");
 const postRoutes = require("./routes/postsRoutes");
+const profileRoutes = require("./routes/usersRoutes");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 app.use("/api/posts", postRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
