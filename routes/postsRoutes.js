@@ -8,16 +8,12 @@ const {
   getOnePost,
   updatePost,
   deletePost,
-  showStats,
+  showMyPosts,
 } = require("../controllers/postsController");
 
-// C-Show the make new Post form page
-router.get("/new", (req, res) => {
-  res.render("posts/new");
-});
-
 router.route("/").post(createPost).get(getAllPosts);
-router.route("/stats").get(showStats);
+// router.route("/new").get(getForm);
+router.route("/myposts/:userid").get(showMyPosts);
 router.route("/:id").get(getOnePost).patch(updatePost).delete(deletePost);
 
 module.exports = router;

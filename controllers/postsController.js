@@ -17,6 +17,15 @@ const createPost = async (req, res) => {
   res.json(data);
 };
 
+// // // C-Show the make new Post form page
+// router.get("/new", (req, res) => {
+//   res.render("posts/new");
+// });
+
+// const getForm =async (req, res) => {
+//   res.render("posts/new");
+// };
+
 const getAllPosts = async (req, res) => {
   try {
     const data = await Post.find({});
@@ -31,6 +40,20 @@ const getOnePost = async (req, res) => {
 
   try {
     const post = await Post.findById(id);
+    res.json(post);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const showMyPosts = async (req, res) => {
+  const { userid } = req.params;
+
+  // res.send(userid);
+  try {
+    const post = await Post.find({
+      userId: userid,
+    }).exec();
     res.json(post);
   } catch (e) {
     console.log(e);
@@ -83,7 +106,8 @@ module.exports = {
   createPost,
   getAllPosts,
   updatePost,
-  showStats,
+  showMyPosts,
   getOnePost,
   deletePost,
+  // getForm,
 };
