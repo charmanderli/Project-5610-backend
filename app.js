@@ -50,7 +50,7 @@ app.use(express.json());
 app.use("/api/posts", postRoutes);
 app.use("/api/profile", profileRoutes);
 
-app.use(notFoundMiddleware);
+// app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
 app.get("*", (req, res) =>
