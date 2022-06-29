@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 
-  nickName: {
+  username: {
     type: String,
     required: false,
   },
@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
   city: {
     type: String,
     required: true,
+  },
+
+  bio: {
+    type: String,
+    required: false,
   },
 
   tags: {

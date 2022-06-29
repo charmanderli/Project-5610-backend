@@ -11,7 +11,6 @@ const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 
 const cors = require("cors");
-const { NOTFOUND } = require("dns");
 require("dotenv").config();
 app.use(cors());
 
@@ -30,6 +29,8 @@ try {
 } catch (e) {
   console.log("could not connect");
 }
+
+
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

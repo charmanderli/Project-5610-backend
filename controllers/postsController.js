@@ -92,7 +92,7 @@ const updatePost = async (req, res) => {
       runValidators: true,
       new: true,
     });
-    res.json(post)
+    res.json(post);
   } catch (err) {
     console.log(err);
   }
@@ -112,10 +112,6 @@ const deletePost = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-};
-
-const showStats = async (req, res) => {
-  res.send("show stats");
 };
 
 module.exports = {

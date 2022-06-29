@@ -4,15 +4,13 @@ const path = require("path");
 
 const {
   getProfile,
-  createProfile,
   updateProfile,
   deleteProfile,
 } = require("../controllers/usersController");
 
 router
-  .route("/:userid")
+  .route("/:userId")
   .get(getProfile)
-  .post(createProfile)
   .patch(updateProfile)
   .delete(deleteProfile);
 
