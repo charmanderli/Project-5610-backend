@@ -2,6 +2,7 @@ const path = require("path");
 const Post = require(path.join(__dirname, "../models/posts.js"));
 
 const { body, validationResult } = require("express-validator");
+const { search } = require("../routes/postsRoutes");
 const createPost = async (req, res) => {
   body("title").isLength({ min: 2 });
   body("body").isLength({ min: 5 });
@@ -16,6 +17,15 @@ const createPost = async (req, res) => {
 
   res.json(data);
 };
+
+// // // C-Show the make new Post form page
+// router.get("/new", (req, res) => {
+//   res.render("posts/new");
+// });
+
+// const getForm =async (req, res) => {
+//   res.render("posts/new");
+// };
 
 const getAllPosts = async (req, res) => {
   try {
@@ -37,6 +47,34 @@ const getOnePost = async (req, res) => {
   }
 };
 
+const getPostsByLocation = async (req, res) => {
+  // res.send('search');
+  try {
+    const params = req.query;
+    let data = await Post.find({});
+    data = data.filter((d) =>
+      d.city.trim().toLowerCase().includes(params.location.trim().toLowerCase())
+    );
+    res.json(data);
+  } catch (err) {
+    console.log("err ", err);
+  }
+};
+
+const showMyPosts = async (req, res) => {
+  const { userid } = req.params;
+
+  // res.send(userid);
+  try {
+    const post = await Post.find({
+      userId: userid,
+    }).exec();
+    res.json(post);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const updatePost = async (req, res) => {
   body("title").isLength({ min: 2 });
   body("body").isLength({ min: 5 });
@@ -49,11 +87,12 @@ const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log(req.body);
+    // console.log(req.body);
     const post = await Post.findByIdAndUpdate(id, req.body, {
       runValidators: true,
       new: true,
     });
+    res.json(post);
   } catch (err) {
     console.log(err);
   }
@@ -75,15 +114,13 @@ const deletePost = async (req, res) => {
   }
 };
 
-const showStats = async (req, res) => {
-  res.send("show stats");
-};
-
 module.exports = {
   createPost,
   getAllPosts,
   updatePost,
-  showStats,
+  showMyPosts,
   getOnePost,
   deletePost,
+  getPostsByLocation,
+  // getForm,
 };

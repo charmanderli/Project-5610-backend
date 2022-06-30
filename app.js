@@ -6,15 +6,15 @@ dotenv.config();
 
 const path = require("path");
 const postRoutes = require("./routes/postsRoutes");
+const profileRoutes = require("./routes/usersRoutes");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 
 const cors = require("cors");
-const { NOTFOUND } = require("dns");
 require("dotenv").config();
 app.use(cors());
 
-//const uri = "mongodb://127.0.0.1/my_database";
+// const uri = "mongodb://127.0.0.1/post_database";
 // Connecting to Mongoose
 const uri = process.env.DB_URL;
 
@@ -30,9 +30,11 @@ try {
   console.log("could not connect");
 }
 
+
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
+app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
@@ -41,14 +43,27 @@ app.use(methodOverride("_method"));
 const notFoundMiddleware = require("./middleware/not-found.js");
 const errorHandlerMiddleware = require("./middleware/error-handler.js");
 
-app.use(express.json());
-app.use("/posts", postRoutes);
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
 
-app.use(notFoundMiddleware);
+app.use(express.json());
+app.use("/api/posts", postRoutes);
+app.use("/api/profile", profileRoutes);
+
+// app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-app.listen((port = process.env.PORT || 5000), () => {
-  console.log("app is listening on port 5000");
+app.get("*", (req, res) =>
+  res.sendFile(path.resolve(__dirname + "/public", "index.html"))
+);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
+app.listen(process.env.PORT || 80, () => {
+  console.log("app is listening on port ");
 });
 
 // var createError = require('http-errors');
